@@ -5,269 +5,196 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>英語 後期定期範囲 まとめ</title>
   <style>
-    body {
-      font-family: sans-serif;
-      padding: 20px;
-      background-color: #f0f0f5;
-      margin: 0;
-    }
+    body { font-family: sans-serif; padding: 20px; background-color: #f0f0f5; margin: 0; }
+    .full-width-button { width: 100%; padding: 15px; font-size: 1.1rem; margin: 10px 0; border: none; border-radius: 8px; background-color: #007bff; color: white; cursor: pointer; transition: background-color 0.2s ease; }
+    .full-width-button:hover { background-color: #0056b3; }
+    .button-group, #toggle-buttons { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+    #toggle-buttons { display: none; }
+    button.active { background-color: #0056b3; }
 
-    .full-width-button {
-      width: 100%;
-      padding: 15px;
-      font-size: 1.1rem;
-      margin: 10px 0;
-      border: none;
-      border-radius: 8px;
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
+    /* 文ごとの枠 */
+    .sentence { background: white; margin-bottom: 20px; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
+    
+    /* 英文と和訳の表示設定：行を分ける */
+    .english { color: #333; font-weight: bold; margin-bottom: 10px; font-size: 1.1rem; display: none; border-bottom: 1px dashed #ccc; padding-bottom: 5px; }
+    .japanese { color: #555; font-size: 1rem; display: none; }
 
-    .full-width-button:hover {
-      background-color: #0056b3;
-    }
-
-    .button-group, #toggle-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
-    }
-
-    #toggle-buttons {
-      display: none; /* 非表示から始める */
-    }
-
-    button.active {
-      background-color: #0056b3;
-    }
-
-    .sentence {
-      background: white;
-      margin-bottom: 15px;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .english, .japanese {
-      margin: 5px 0;
-      font-size: 1.1rem;
-      display: none;
-    }
-
-    .section {
-      display: none;
-    }
-
-    .visible {
-      display: block;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-
-      .full-width-button {
-        font-size: 1rem;
-        padding: 10px;
-      }
-
-      .sentence {
-        font-size: 1rem;
-      }
-    }
+    .section { display: none; }
+    .visible { display: block; }
+    @media (max-width: 600px) { body { padding: 10px; } .full-width-button { font-size: 1rem; padding: 10px; } }
   </style>
 </head>
 <body>
   <h1>英語 後期定期範囲 まとめ</h1>
 
-  <!-- LESSON 選択画面 -->
   <div id="lesson-list" class="section visible">
-    <button class="full-width-button" onclick="openLesson()">LESSON8</button>
-    <button class="full-width-button" onclick="alert('LESSON9はまだ未実装です')">LESSON9</button>
+    <button class="full-width-button" onclick="openLesson('lesson8')">LESSON 8</button>
+    <button class="full-width-button" onclick="openLesson('lesson9')">LESSON 9</button>
   </div>
 
-  <!-- Part 選択画面 -->
-  <div id="part-list" class="section">
-    <button class="full-width-button" onclick="openPart('part1')">Part1</button>
-    <button class="full-width-button" onclick="openPart('part2')">Part2</button>
-    <button class="full-width-button" onclick="openPart('part3')">Part3</button>
+  <div id="lesson8-part-list" class="section">
+    <button class="full-width-button" onclick="showPartContent('l8p1')">Part 1</button>
+    <button class="full-width-button" onclick="showPartContent('l8p2')">Part 2</button>
+    <button class="full-width-button" onclick="showPartContent('l8p3')">Part 3</button>
+    <button class="full-width-button" onclick="showPartContent('l8p4')">Part 4</button>
     <button class="full-width-button" onclick="goBackToLessons()">← 戻る</button>
   </div>
 
-  <!-- 英文／日本語訳ボタン（Part画面でのみ表示） -->
+  <div id="lesson9-part-list" class="section">
+    <button class="full-width-button" onclick="showPartContent('l9p1')">Part 1</button>
+    <button class="full-width-button" onclick="showPartContent('l9p2')">Part 2</button>
+    <button class="full-width-button" onclick="showPartContent('l9p3')">Part 3</button>
+    <button class="full-width-button" onclick="showPartContent('l9p4')">Part 4</button>
+    <button class="full-width-button" onclick="goBackToLessons()">← 戻る</button>
+  </div>
+
   <div id="toggle-buttons" class="button-group">
     <button id="toggleEnglish">英文</button>
     <button id="toggleJapanese">日本語訳</button>
-    <button onclick="goBackToParts()">← 戻る</button>
+    <button onclick="goBackToParts()">← パート選択へ</button>
   </div>
 
-  <!-- Part1 本文 -->
-  <div id="part1-content" class="section">
+  <div id="l8p1-content" class="section content-container">
     <div class="sentence"><div class="english">"I made it!" On October 22, 2019, a young baker, Shuichi Osawa, shouted with joy in Nantes, France.</div>
-    <div class="japanese">｢やった！｣2019年10月22日、フランスのナントで若いパン職人、大澤秀一が喜びの叫びを上げました。</div></div>
+      <div class="japanese">｢やった！｣2019年10月22日、フランスのナントで若いパン職人、大澤秀一が喜びの叫びを上げました。</div></div>
     <div class="sentence"><div class="english">He had just won first prize at the World of Bread Contest.</div>
-    <div class="japanese">彼は世界パンコンテストで優勝したばかりでした。</div></div>
+      <div class="japanese">彼は世界パンコンテストで優勝したばかりでした。</div></div>
     <div class="sentence"><div class="english">On the podium where all the members of his team were standing, he gave a big smile and said,"I am truly proud. All my effort has finally paid off."</div>
-    <div class="japanese">チーム全員が立つ表彰台で、彼は満面の笑みを浮かべ、「本当に誇りに思います。これまで(すべて)の努力がついに報われました。」と言いました。</div></div>
+      <div class="japanese">チーム全員が立つ表彰台で、彼は満面の笑みを浮かべ、「本当に誇りに思います。これまで(すべて)の努力がついに報われました。」と言いました。</div></div>
     <div class="sentence"><div class="english">The contest is held every two years.</div>
-    <div class="japanese">この大会は2年に一度開催されます。</div></div>
+      <div class="japanese">この大会は2年に一度開催されます。</div></div>
     <div class="sentence"><div class="english">In 2019, teams from several countries gathered.</div>
-    <div class="japanese">2019年には、複数の国からチームが集まりました。</div></div>
+      <div class="japanese">2019年には、複数の国からチームが集まりました。</div></div>
     <div class="sentence"><div class="english">Each team consists of a baker, an assistant, and a coach.</div>
-    <div class="japanese">各チームは、パン職人、アシスタント、コーチで構成されています。</div></div>
+      <div class="japanese">各チームは、パン職人、アシスタント、コーチで構成されています。</div></div>
     <div class="sentence"><div class="english">To meet the standards of the contest, all the bread must be delicious and also pleasing to the eye.</div>
-    <div class="japanese">コンテストの基準を満たすには、すべてのパンが美味しく、見た目も美しくなければなりませんでした。</div></div>
-    <div class="sentence"><div class="english">The contest was a big challenge with lots of requirements, but Osawa ded it.</div>
-    <div class="japanese">このコンテストは多くの要件を伴う大きな挑戦でしたが、大澤はそれを成し遂げました。</div></div>
+      <div class="japanese">コンテストの基準を満たすには、すべてのパンが美味しく、見た目も美しくなければなりませんでした。</div></div>
+    <div class="sentence"><div class="english">The contest was a big challenge with lots of requirements, but Osawa did it.</div>
+      <div class="japanese">このコンテストは多くの要件を伴う大きな挑戦でしたが、大澤はそれを成し遂げました。</div></div>
     <div class="sentence"><div class="english">This was the very first time a Japanese team had won the contest.</div>
-    <div class="japanese">日本のチームがコンテンストで優勝したのはこれが始めてでした。</div></div>
+      <div class="japanese">日本のチームがコンテンストで優勝したのはこれが始めてでした。</div></div>
   </div>
 
-<!-- Part2 本文 -->
-  <div id="part2-content" class="section">
+  <div id="l8p2-content" class="section content-container">
     <div class="sentence"><div class="english">Osawa said, "My family runs a bakery, so it was natural for me to become a baker."</div>
-    <div class="japanese">大澤は「実家がパン屋なので、パン職人になるのは自然な流れでした」と言いました。</div></div>
-    <div class="sentence"><div class="english">In 2012, after working as a baker for several years, he left his hometown in Gunma, heading for Kobe to ask the famous chef Takaaki Nisikawa for training.</div>
-    <div class="japanese">2012年、数年間パン職人として働いた後、故郷の群馬を離れ、神戸へ向かい、有名なシェフの西川功晃に修行を依頼しました。</div></div>
+      <div class="japanese">大澤は「実家がパン屋なので、パン職人になるのは自然な流れでした」と言いました。</div></div>
+    <div class="sentence"><div class="english">In 2012, after working as a baker for several years, he left his hometown in Gunma, heading for Kobe to ask the famous chef Takaaki Nishikawa for training.</div>
+      <div class="japanese">2012年、数年間パン職人として働いた後、故郷の群馬を離れ、神戸へ向かい、有名なシェフの西川功晃に修行を依頼しました。</div></div>
     <div class="sentence"><div class="english">"I was really amazed to see how he kneaded dough. He treated it just like a new born baby," said Osawa.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">「彼がどうやって生地をこねるかを見て、本当に驚きました。彼はまるで生まれたばかりの赤ん坊のように生地を扱っていました」と大澤は言いました。</div></div>
     <div class="sentence"><div class="english">"He was very strict with me, but I swore to myself I would never give up."</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">「彼は私に対してとても厳しかったですが、私は決して諦めないと自分自身に誓いました。」</div></div>
     <div class="sentence"><div class="english">In 2015, Nishikawa took Osawa to Nantes.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">2015年、西川は大澤をナントへ連れて行きました。</div></div>
     <div class="sentence"><div class="english">Osawa had a chance to see the World of Bread Contest, overwhelmed by the international bakers' skills and passion.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">大澤は世界パンコンテストを見る機会があり、国際的なパン職人たちの技術と情熱に圧倒されました。</div></div>
     <div class="sentence"><div class="english">He said to himself, "I'll enter this contest some day."</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">彼は「いつかこのコンテストに出場するぞ」と心に決めました。</div></div>
   </div>
 
-<!-- Part3 本文 -->
-  <div id="part3-content" class="section">
+  <div id="l8p3-content" class="section content-container">
     <div class="sentence"><div class="english">Returning from France, Osawa was full of passion and started preparing for the contest.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">フランスから帰国した大澤は情熱に溢れ、コンテストの準備を始めました。</div></div>
     <div class="sentence"><div class="english">According to the regulations, each team has to make eleven types of bread within eight and a half hours.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">規定によると、各チームは8時間半以内に11種類のパンを作らなければなりません。</div></div>
     <div class="sentence"><div class="english">He had to practice hard and needed a place to practice.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">彼は猛練習しなければならず、練習場所を必要としていました。</div></div>
     <div class="sentence"><div class="english">In 2017, a coffee shop owner kindly offered him a storage place where he could practice.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">2017年、あるコーヒーショップのオーナーが、彼に練習できる倉庫を親切に提供してくれました。</div></div>
     <div class="sentence"><div class="english">"I was very lucky because people around me always helped me, so I managed to continue my challenge," said Osawa.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">「周りの人々がいつも助けてくれたので、私はとても運が良かったです。それでなんとか挑戦を続けることができました」と大澤は言いました。</div></div>
     <div class="sentence"><div class="english">He was delighted at the offer, but he had several problems, including an electrical power shortage and a kitchen too small for an oven.</div>
-    <div class="japanese"></div></div>
-    <div class="sentence"><div class="english">In the storage place, the temperature reached as high as 50℃ in summer,and it was freezing in winter.</div>
-    <div class="japanese"></div></div>
-    <div class="sentence"><div class="english">He worked during the daytime and practiced ata night.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">彼はその申し出を喜びましたが、電力不足やオーブンを置くには狭すぎるキッチンなど、いくつかの問題がありました。</div></div>
+    <div class="sentence"><div class="english">In the storage place, the temperature reached as high as 50℃ in summer, and it was freezing in winter.</div>
+      <div class="japanese">その倉庫では、夏は気温が50℃に達し、冬は凍えるような寒さでした。</div></div>
+    <div class="sentence"><div class="english">He worked during the daytime and practiced at night.</div>
+      <div class="japanese">彼は昼間は働き、夜に練習しました。</div></div>
     <div class="sentence"><div class="english">He could hardly sleep.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">彼はほとんど眠ることができませんでした。</div></div>
     <div class="sentence"><div class="english">His life was like that for almost two years.</div>
-    <div class="japanese"></div></div>
-</div>
+      <div class="japanese">彼の生活は2年近くそのようなものでした。</div></div>
+  </div>
 
-<!-- Part4 本文 -->
-  <div id="part4-content" class="section">
+  <div id="l8p4-content" class="section content-container">
     <div class="sentence"><div class="english">At last, Osawa arrived back in Nantes, where the 2019 World of Bread Contest would be held.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">ついに大澤は、2019年世界パンコンテストが開催されるナントに戻ってきました。</div></div>
     <div class="sentence"><div class="english">He was the ambassador of bread from Japan.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">彼は日本代表のパンの大使でした。</div></div>
     <div class="sentence"><div class="english">As soon as the contest started, he began to make the required types of bread one after another.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">コンテストが始まるとすぐに、彼は要求された種類のパンを次々と作り始めました。</div></div>
     <div class="sentence"><div class="english">All the beautiful bread Osawa had made grabbed the judges' hearts.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">大澤が作ったすべての美しいパンは審査員の心をつかみました。</div></div>
     <div class="sentence"><div class="english">Above all, his original work "Yabusame" simply amazed the whole venue.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">何よりも、彼のオリジナル作品「流鏑馬（やぶさめ）」は会場全体を驚かせました。</div></div>
     <div class="sentence"><div class="english">Osawa's team won the championship.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">大澤のチームが優勝しました。</div></div>
     <div class="sentence"><div class="english">Some judges said, "You're incredible and just crazy!"</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">審査員の中には「君たちは信じられない、まさにクレイジーだ！」と言う人もいました。</div></div>
     <div class="sentence"><div class="english">Osawa was overjoyed to hear the praise.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">大澤はその称賛を聞いて大喜びしました。</div></div>
     <div class="sentence"><div class="english">Osawa said, "I won, but it doesn't mean I have special talents. I did well only because I practiced a lot."</div>
-    <div class="japanese"></div></div>
-    <div class="sentence"><div class="english">Practice males perfect.</div>
-    <div class="japanese"></div></div>
+      <div class="japanese">大澤は「優勝しましたが、私に特別な才能があるわけではありません。たくさん練習したからこそ上手くいったのです」と言いました。</div></div>
+    <div class="sentence"><div class="english">Practice makes perfect.</div>
+      <div class="japanese">継続は力なり（習うより慣れよ）。</div></div>
     <div class="sentence"><div class="english">He did win the international contest, but his story of baking the best bread will never end.</div>
-    <div class="japanese"></div></div>
-</div>
+      <div class="japanese">彼は国際大会で優勝しましたが、最高のパンを焼くという彼の物語は決して終わることはありません。</div></div>
+  </div>
+
+  <div id="l9p1-content" class="section content-container">
+    <div class="sentence">
+      <div class="english">Honey is a nutritious food </div>
+        <div class="japanese">レッスン9のサンプル文章です。</div>
+    </div>
+  </div>
 
   <script>
-    const englishBtn = document.getElementById("toggleEnglish");
-    const japaneseBtn = document.getElementById("toggleJapanese");
-    const englishTexts = document.querySelectorAll(".english");
-    const japaneseTexts = document.querySelectorAll(".japanese");
+    let currentLesson = "";
 
-    let englishVisible = false;
-    let japaneseVisible = false;
-
-    englishBtn.addEventListener("click", () => {
-      englishVisible = !englishVisible;
-      englishBtn.classList.toggle("active", englishVisible);
-      englishTexts.forEach(e => e.style.display = englishVisible ? "block" : "none");
-    });
-
-    japaneseBtn.addEventListener("click", () => {
-      japaneseVisible = !japaneseVisible;
-      japaneseBtn.classList.toggle("active", japaneseVisible);
-      japaneseTexts.forEach(j => j.style.display = japaneseVisible ? "block" : "none");
-    });
-
-    function openLesson() {
+    function openLesson(lessonId) {
+      currentLesson = lessonId;
       document.getElementById("lesson-list").classList.remove("visible");
-      document.getElementById("part-list").classList.add("visible");
-      document.getElementById("toggle-buttons").style.display = "none";
+      document.getElementById(lessonId + "-part-list").classList.add("visible");
     }
 
-  function openPart(partId) {
-    document.getElementById("part-list").classList.remove("visible");
-    document.getElementById("toggle-buttons").style.display = "flex";
-
-    // すべての Part を非表示にする
-    document.getElementById("part1-content").classList.remove("visible");
-    document.getElementById("part2-content").classList.remove("visible");
-    document.getElementById("part3-content").classList.remove("visible");
-
-    // 指定された Part のみ表示する
-    if (partId === "part1") {
-      document.getElementById("part1-content").classList.add("visible");
-    }
-    if (partId === "part2") {
-      document.getElementById("part2-content").classList.add("visible");
-    }
-    if (partId === "part3") {
-      document.getElementById("part3-content").classList.add("visible");
-    }
-
-    // 表示状態をリセット
-    englishVisible = false;
-    japaneseVisible = false;
-    englishBtn.classList.remove("active");
-    japaneseBtn.classList.remove("active");
-    englishTexts.forEach(e => e.style.display = "none");
-    japaneseTexts.forEach(j => j.style.display = "none");
-    }
-
-    function goBackToLessons() {
-      document.getElementById("part-list").classList.remove("visible");
-      document.getElementById("lesson-list").classList.add("visible");
-      document.getElementById("toggle-buttons").style.display = "none";
+    function showPartContent(partId) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+      document.getElementById(partId + "-content").classList.add("visible");
+      document.getElementById("toggle-buttons").style.display = "flex";
+      resetButtons();
     }
 
     function goBackToParts() {
-      document.getElementById("part1-content").classList.remove("visible");
-      document.getElementById("part2-content").classList.remove("visible");
-      document.getElementById("part3-content").classList.remove("visible");
-      document.getElementById("part-list").classList.add("visible");
+      document.querySelectorAll('.content-container').forEach(s => s.classList.remove('visible'));
+      document.getElementById(currentLesson + "-part-list").classList.add("visible");
       document.getElementById("toggle-buttons").style.display = "none";
     }
-    
+
+    function goBackToLessons() {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+      document.getElementById("lesson-list").classList.add("visible");
+    }
+
+    // 表示切り替え機能
+    const engBtn = document.getElementById("toggleEnglish");
+    const jpnBtn = document.getElementById("toggleJapanese");
+
+    function resetButtons() {
+      engBtn.classList.remove("active");
+      jpnBtn.classList.remove("active");
+      document.querySelectorAll(".english, .japanese").forEach(el => el.style.display = "none");
+    }
+
+    engBtn.onclick = function() {
+      const activeContent = document.querySelector(".content-container.visible");
+      const isVisible = engBtn.classList.toggle("active");
+      activeContent.querySelectorAll(".english").forEach(el => el.style.display = isVisible ? "block" : "none");
+    };
+
+    jpnBtn.onclick = function() {
+      const activeContent = document.querySelector(".content-container.visible");
+      const isVisible = jpnBtn.classList.toggle("active");
+      activeContent.querySelectorAll(".japanese").forEach(el => el.style.display = isVisible ? "block" : "none");
+    };
   </script>
 </body>
-
 </html>
