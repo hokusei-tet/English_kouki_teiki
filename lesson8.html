@@ -1,3 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 8 - 英語まとめ</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <div id="lesson-parts" class="section visible">
+    <h1>LESSON 8</h1>
+    
+    <div class="part-row">
+      <span class="part-label">Part 1</span>
+      <div class="btn-group-sm">
+        <button class="sm-button btn-word" onclick="showContent('l8p1', 'word')">単語</button>
+        <button class="sm-button btn-main" onclick="showContent('l8p1', 'main')">本文</button>
+      </div>
+    </div>
+
+    <div class="part-row">
+      <span class="part-label">Part 2</span>
+      <div class="btn-group-sm">
+        <button class="sm-button btn-word" onclick="showContent('l8p2', 'word')">単語</button>
+        <button class="sm-button btn-main" onclick="showContent('l8p2', 'main')">本文</button>
+      </div>
+    </div>
+
+    <button class="full-width-button" style="background-color: #6c757d;" onclick="location.href='index.html'">← 戻る</button>
+  </div>
+
+  <div id="toggle-buttons" class="button-group" style="display: none;">
+    <button id="toggleEnglish">英文</button>
+    <button id="toggleJapanese">日本語訳</button>
+    <button onclick="goBackToPartsLocal()" style="background-color: #6c757d; color: white; border: none; border-radius: 5px; padding: 10px;">← 戻る</button>
+  </div>
+
 <div id="l8p1-content" class="section content-container">
     <div class="main-text">
       <h3>1</h3>
@@ -351,3 +390,5 @@
       </table>
     </div>
   </div>
+    </body>
+</html>
